@@ -48,7 +48,12 @@
             <span>{{ opcional.tipo }}</span>
           </div>
           <div class="input-container">
-            <input type="submit" class="submit-btn" value="Criar meu burguer" />
+            <input
+              type="submit"
+              class="submit-btn"
+              value="Criar meu burguer"
+              @click="showAlert"
+            />
           </div>
         </div>
       </form>
@@ -72,6 +77,9 @@ export default {
     };
   },
   methods: {
+    showAlert() {
+      Swal.fire("Sucesso!", "Hamburguer criado com sucesso", "success");
+    },
     async getIngredients() {
       const response = await fetch("http://localhost:3000/ingredientes");
       const data = await response.json();
