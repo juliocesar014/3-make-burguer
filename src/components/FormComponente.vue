@@ -107,7 +107,14 @@ export default {
           "Content-Type": "application/json",
         },
         body: burguerJson,
-      }); // Enviar a requisição para a API
+      });
+      // Enviar a requisição para a API
+
+      // Limpar os campos do formulário - Após preencher o formulário.
+      (this.nome = ""),
+        (this.pao = ""),
+        (this.carne = ""),
+        (this.opcionais = []);
 
       const data = await response.json();
       console.log(data);
