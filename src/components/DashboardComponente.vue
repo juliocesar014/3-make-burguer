@@ -11,37 +11,30 @@
         <div>Ações:</div>
       </div>
     </div>
-    <div id="burguer-table-rows">
+    <div id="burguer-table-rows" v-for="burguer in burgers" :key="burguer.id">
       <div class="burguer-table-row">
-        <div class="order-number">1</div>
-        <div>Nome do Cliente</div>
-        <div>Pão 01</div>
-        <div>Carne 01</div>
+        <div class="order-number">{{ burguer.id }}</div>
+        <div>{{ burguer.nome }}</div>
+        <div>{{ burguer.pao }}</div>
+        <div>{{ burguer.carne }}</div>
         <div>
-          <li>Salame</li>
-          <li>Tomate</li>
+          <ul>
+            <li v-for="(opcional, index) in burguer.opcionais" :key="index">
+              {{ opcional }}
+            </li>
+          </ul>
         </div>
         <div>
-          <select name="status" class="status" id="">
-            <option value="">Selecione</option>
-          </select>
-          <button class="delete-btn">Cancelar</button>
-        </div>
-      </div>
-    </div>
-    <div id="burguer-table-rows">
-      <div class="burguer-table-row">
-        <div class="order-number">1</div>
-        <div>Nome do Cliente</div>
-        <div>Pão 01</div>
-        <div>Carne 01</div>
-        <div>
-          <li>Salame</li>
-          <li>Tomate</li>
-        </div>
-        <div>
-          <select name="status" class="status" id="">
-            <option value="">Selecione</option>
+          <select name="status" class="status" id="status">
+            <option value="" disabled>Selecione</option>
+            <option
+              value="s.tipo"
+              v-for="s in status"
+              :key="s.id"
+              :selected="burguer.status === s.tipo"
+            >
+              {{ s.tipo }}
+            </option>
           </select>
           <button class="delete-btn">Cancelar</button>
         </div>
@@ -53,6 +46,31 @@
 <script>
 export default {
   name: "DashboardComponente",
+  data() {
+    return {
+      burgers: null,
+      burger_id: null,
+      status: [],
+    };
+  },
+  methods: {
+    async getPedidos() {
+      const response = await fetch("http://localhost:3000/burgers");
+      const data = await response.json();
+      this.burgers = data;
+      // Resgatar status
+      this.getStatus();
+    },
+
+    async getStatus() {
+      const response = await fetch("http://localhost:3000/status");
+      const data = await response.json();
+      this.status = data;
+    },
+  },
+  mounted() {
+    this.getPedidos();
+  },
 };
 </script>
 

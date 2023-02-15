@@ -77,9 +77,6 @@ export default {
     };
   },
   methods: {
-    showAlert() {
-      Swal.fire("Sucesso!", "Hamburguer criado com sucesso", "success");
-    },
     async getIngredients() {
       const response = await fetch("http://localhost:3000/ingredientes");
       const data = await response.json();
@@ -87,6 +84,10 @@ export default {
       this.paes = data.paes;
       this.carnes = data.carnes;
       this.opcionaisdata = data.opcionais;
+    },
+
+    showAlert() {
+      Swal.fire(`Sucesso!`, `Pedido criado com sucesso`, `success`);
     },
 
     async createBurguer(e) {
@@ -99,8 +100,9 @@ export default {
         opcionais: Array.from(this.opcionais),
         status: "Solicitado",
       };
-      const burguerJson = JSON.stringify(burguer);
 
+      // Enviar a requisição para a API
+      const burguerJson = JSON.stringify(burguer);
       const response = await fetch("http://localhost:3000/burgers", {
         method: "POST",
         headers: {
@@ -108,7 +110,6 @@ export default {
         },
         body: burguerJson,
       });
-      // Enviar a requisição para a API
 
       // Limpar os campos do formulário - Após preencher o formulário.
       (this.nome = ""),
